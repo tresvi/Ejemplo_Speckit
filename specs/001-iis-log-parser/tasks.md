@@ -95,27 +95,27 @@ quickstart escenarios 1 through 6, 8 and 10.
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T023 [P] [US1] Unit tests for site folder recognition (`^W3SVC\d+$`, foreign folders reported as skipped) in `tests/IISLogParser.Tests/Unit/SiteDiscoveryTests.cs`
-- [ ] T024 [P] [US1] Integration test for a full snapshot over a two-site tree in `tests/IISLogParser.Tests/Integration/SnapshotIngestionTests.cs` (quickstart escenario 1)
-- [ ] T025 [P] [US1] Integration test asserting a second identical run adds zero rows in `tests/IISLogParser.Tests/Integration/IdempotencyTests.cs` (escenario 2, SC-004)
-- [ ] T026 [P] [US1] Integration test asserting appended lines are the only ones ingested on re-run in `tests/IISLogParser.Tests/Integration/IncrementalIngestionTests.cs` (escenario 3)
-- [ ] T027 [P] [US1] Integration test asserting a trailing line without a newline is not ingested until completed, and then exactly once, in `tests/IISLogParser.Tests/Integration/PartialLineTests.cs` (escenario 4, invariant I-03)
-- [ ] T028 [P] [US1] Integration test asserting a shorter replacement file purges old rows and re-ingests cleanly in `tests/IISLogParser.Tests/Integration/FileReplacementTests.cs` (escenario 5, FR-011a, invariant I-04)
-- [ ] T029 [P] [US1] Integration test asserting a malformed line is rejected and counted while valid lines still ingest in `tests/IISLogParser.Tests/Integration/MalformedLineTests.cs` (escenario 6, FR-005)
-- [ ] T030 [P] [US1] Integration test asserting an unreadable file is skipped, reported and yields exit code 2 in `tests/IISLogParser.Tests/Integration/PartialFailureTests.cs` (escenario 8, FR-023 to FR-025)
-- [ ] T031 [P] [US1] Integration test asserting ingestion succeeds while an external writer holds the file open in `tests/IISLogParser.Tests/Integration/ConcurrentWriterTests.cs` (escenario 10, FR-006)
+- [X] T023 [P] [US1] Unit tests for site folder recognition (`^W3SVC\d+$`, foreign folders reported as skipped) in `tests/IISLogParser.Tests/Unit/SiteDiscoveryTests.cs`
+- [X] T024 [P] [US1] Integration test for a full snapshot over a two-site tree in `tests/IISLogParser.Tests/Integration/SnapshotIngestionTests.cs` (quickstart escenario 1)
+- [X] T025 [P] [US1] Integration test asserting a second identical run adds zero rows in `tests/IISLogParser.Tests/Integration/IdempotencyTests.cs` (escenario 2, SC-004)
+- [X] T026 [P] [US1] Integration test asserting appended lines are the only ones ingested on re-run in `tests/IISLogParser.Tests/Integration/IncrementalIngestionTests.cs` (escenario 3)
+- [X] T027 [P] [US1] Integration test asserting a trailing line without a newline is not ingested until completed, and then exactly once, in `tests/IISLogParser.Tests/Integration/PartialLineTests.cs` (escenario 4, invariant I-03)
+- [X] T028 [P] [US1] Integration test asserting a shorter replacement file purges old rows and re-ingests cleanly in `tests/IISLogParser.Tests/Integration/FileReplacementTests.cs` (escenario 5, FR-011a, invariant I-04)
+- [X] T029 [P] [US1] Integration test asserting a malformed line is rejected and counted while valid lines still ingest in `tests/IISLogParser.Tests/Integration/MalformedLineTests.cs` (escenario 6, FR-005)
+- [X] T030 [P] [US1] Integration test asserting an unreadable file is skipped, reported and yields exit code 2 in `tests/IISLogParser.Tests/Integration/PartialFailureTests.cs` (escenario 8, FR-023 to FR-025)
+- [X] T031 [P] [US1] Integration test asserting ingestion succeeds while an external writer holds the file open in `tests/IISLogParser.Tests/Integration/ConcurrentWriterTests.cs` (escenario 10, FR-006)
 
 ### Implementation for User Story 1
 
-- [ ] T032 [US1] Implement `SiteDiscovery` and `ISiteDiscovery` in `src/IISLogParser/Discovery/` — enumerate `W3SVC<n>` folders, collect foreign folders as skipped
-- [ ] T033 [US1] Implement `FileIngestor` in `src/IISLogParser/Ingestion/FileIngestor.cs` — read from the recorded offset, consume only newline-terminated lines, flush in 5.000-line batches
-- [ ] T034 [US1] Add field-map reconstruction on resume to `FileIngestor` — re-scan `#` directives from the start of the file before resuming at the confirmed offset (data-model.md, `FieldMap` transitions)
-- [ ] T035 [US1] Add truncation and replacement detection to `FileIngestor` — current size below `bytes_ingested` triggers the purge-and-restart path of FR-011a
-- [ ] T036 [P] [US1] Implement `IngestReport` counters (files, new rows, rejected lines, skipped paths) in `src/IISLogParser/Ingestion/IngestReport.cs`
-- [ ] T037 [US1] Implement `SnapshotRunner` in `src/IISLogParser/Ingestion/SnapshotRunner.cs` — iterate every site and every file, aggregate the report
-- [ ] T038 [US1] Add skip-and-continue handling for unreadable files and folders to `SnapshotRunner`, feeding `IngestReport.SkippedPaths` (FR-024, FR-025)
-- [ ] T039 [US1] Wire the snapshot path in `src/IISLogParser/Program.cs` — compose dependencies, emit the report and map `IngestReport` to exit codes 0, 2 and 3 per [contracts/cli.md](./contracts/cli.md)
-- [ ] T040 [US1] Emit the `startup`, `file_opened`, `file_replaced`, `field_map_changed`, `batch_committed`, `path_skipped` and `fatal_error` structured events at their boundaries, with no per-line event (Principle IV)
+- [X] T032 [US1] Implement `SiteDiscovery` and `ISiteDiscovery` in `src/IISLogParser/Discovery/` — enumerate `W3SVC<n>` folders, collect foreign folders as skipped
+- [X] T033 [US1] Implement `FileIngestor` in `src/IISLogParser/Ingestion/FileIngestor.cs` — read from the recorded offset, consume only newline-terminated lines, flush in 5.000-line batches
+- [X] T034 [US1] Add field-map reconstruction on resume to `FileIngestor` — re-scan `#` directives from the start of the file before resuming at the confirmed offset (data-model.md, `FieldMap` transitions)
+- [X] T035 [US1] Add truncation and replacement detection to `FileIngestor` — current size below `bytes_ingested` triggers the purge-and-restart path of FR-011a
+- [X] T036 [P] [US1] Implement `IngestReport` counters (files, new rows, rejected lines, skipped paths) in `src/IISLogParser/Ingestion/IngestReport.cs`
+- [X] T037 [US1] Implement `SnapshotRunner` in `src/IISLogParser/Ingestion/SnapshotRunner.cs` — iterate every site and every file, aggregate the report
+- [X] T038 [US1] Add skip-and-continue handling for unreadable files and folders to `SnapshotRunner`, feeding `IngestReport.SkippedPaths` (FR-024, FR-025)
+- [X] T039 [US1] Wire the snapshot path in `src/IISLogParser/Program.cs` — compose dependencies, emit the report and map `IngestReport` to exit codes 0, 2 and 3 per [contracts/cli.md](./contracts/cli.md)
+- [X] T040 [US1] Emit the `startup`, `file_opened`, `file_replaced`, `field_map_changed`, `batch_committed`, `path_skipped` and `fatal_error` structured events at their boundaries, with no per-line event (Principle IV)
 
 **Checkpoint**: User Story 1 fully functional and testable independently — this is the MVP
 
