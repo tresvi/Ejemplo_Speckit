@@ -427,3 +427,15 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# IISLogParser
+bin/
+obj/
+sandbox/
+*.db
+*.db-wal
+*.db-shm
+
+# Los logs de referencia de los tests son datos versionados, no salida de build
+!tests/IISLogParser.Tests/Fixtures/SampleLogs/
+!tests/IISLogParser.Tests/Fixtures/SampleLogs/**

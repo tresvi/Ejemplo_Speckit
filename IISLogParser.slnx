@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/IISLogParser/IISLogParser.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/IISLogParser.Tests/IISLogParser.Tests.csproj" />
+  </Folder>
+</Solution>

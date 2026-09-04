@@ -33,12 +33,12 @@ root.
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create the solution and folder skeleton `src/IISLogParser/` and `tests/IISLogParser.Tests/` per plan.md, plus `IISLogParser.sln` at repository root
-- [ ] T002 Create `src/IISLogParser/IISLogParser.csproj` targeting `net10.0` as `Exe`, referencing `Microsoft.Data.Sqlite` and `Microsoft.Extensions.Logging.Console`
-- [ ] T003 Create `tests/IISLogParser.Tests/IISLogParser.Tests.csproj` with xUnit, referencing the `IISLogParser` project
-- [ ] T004 [P] Add `.editorconfig` at repository root enabling nullable reference types and warnings-as-errors for both projects
-- [ ] T005 [P] Extend `.gitignore` with `bin/`, `obj/`, `*.db`, `*.db-wal`, `*.db-shm` and `sandbox/`
-- [ ] T006 Verify `dotnet build -c Debug` and `dotnet test` both succeed on the empty solution before writing any feature code
+- [X] T001 Create the solution and folder skeleton `src/IISLogParser/` and `tests/IISLogParser.Tests/` per plan.md, plus `IISLogParser.sln` at repository root
+- [X] T002 Create `src/IISLogParser/IISLogParser.csproj` targeting `net10.0` as `Exe`, referencing `Microsoft.Data.Sqlite` and `Microsoft.Extensions.Logging.Console`
+- [X] T003 Create `tests/IISLogParser.Tests/IISLogParser.Tests.csproj` with xUnit, referencing the `IISLogParser` project
+- [X] T004 [P] Add `.editorconfig` at repository root enabling nullable reference types and warnings-as-errors for both projects
+- [X] T005 [P] Extend `.gitignore` with `bin/`, `obj/`, `*.db`, `*.db-wal`, `*.db-shm` and `sandbox/`
+- [X] T006 Verify `dotnet build -c Debug` and `dotnet test` both succeed on the empty solution before writing any feature code
 
 ---
 
@@ -52,31 +52,31 @@ user story runs through all four.
 
 ### Command-line surface
 
-- [ ] T007 [P] Write failing unit tests for argument parsing (defaults, overrides, unknown option, non-numeric and non-positive interval) in `tests/IISLogParser.Tests/Unit/CliParserTests.cs` per [contracts/cli.md](./contracts/cli.md)
-- [ ] T008 [P] Write failing contract tests for exit codes 0/1 and `--help` output in `tests/IISLogParser.Tests/Contract/CliContractTests.cs`
-- [ ] T009 Implement `CliOptions`, `ExitCode`, `HelpText` and `CliParser` in `src/IISLogParser/Cli/` so T007 and T008 pass
+- [X] T007 [P] Write failing unit tests for argument parsing (defaults, overrides, unknown option, non-numeric and non-positive interval) in `tests/IISLogParser.Tests/Unit/CliParserTests.cs` per [contracts/cli.md](./contracts/cli.md)
+- [X] T008 [P] Write failing contract tests for exit codes 0/1 and `--help` output in `tests/IISLogParser.Tests/Contract/CliContractTests.cs`
+- [X] T009 Implement `CliOptions`, `ExitCode`, `HelpText` and `CliParser` in `src/IISLogParser/Cli/` so T007 and T008 pass
 
 ### W3C parsing
 
-- [ ] T010 [P] Write failing unit tests for `#Fields:` handling — first directive, mid-file replacement, data line before any directive — in `tests/IISLogParser.Tests/Unit/FieldMapTests.cs`
-- [ ] T011 [P] Write failing unit tests for line parsing rules V-01 through V-06 in `tests/IISLogParser.Tests/Unit/W3CLineParserTests.cs` per [contracts/w3c-log-format.md](./contracts/w3c-log-format.md)
-- [ ] T012 Implement `FieldMap` (field-name normalisation and column ordering) in `src/IISLogParser/Parsing/FieldMap.cs`
-- [ ] T013 [P] Implement `LogRecord` with the fixed schema fields plus the extras bag in `src/IISLogParser/Parsing/LogRecord.cs`
-- [ ] T014 Implement `W3CLineParser`, including `-` to null, `date`+`time` to `timestamp_utc`, and unknown fields to `extra_fields` JSON, in `src/IISLogParser/Parsing/W3CLineParser.cs`
+- [X] T010 [P] Write failing unit tests for `#Fields:` handling — first directive, mid-file replacement, data line before any directive — in `tests/IISLogParser.Tests/Unit/FieldMapTests.cs`
+- [X] T011 [P] Write failing unit tests for line parsing rules V-01 through V-06 in `tests/IISLogParser.Tests/Unit/W3CLineParserTests.cs` per [contracts/w3c-log-format.md](./contracts/w3c-log-format.md)
+- [X] T012 Implement `FieldMap` (field-name normalisation and column ordering) in `src/IISLogParser/Parsing/FieldMap.cs`
+- [X] T013 [P] Implement `LogRecord` with the fixed schema fields plus the extras bag in `src/IISLogParser/Parsing/LogRecord.cs`
+- [X] T014 Implement `W3CLineParser`, including `-` to null, `date`+`time` to `timestamp_utc`, and unknown fields to `extra_fields` JSON, in `src/IISLogParser/Parsing/W3CLineParser.cs`
 
 ### Storage
 
-- [ ] T015 Write failing contract tests asserting the DDL, the unique index and invariants I-01 through I-05 in `tests/IISLogParser.Tests/Contract/DatabaseSchemaContractTests.cs` per [contracts/database-schema.md](./contracts/database-schema.md)
-- [ ] T016 Implement `SchemaInitializer` with idempotent `IF NOT EXISTS` DDL and the WAL/synchronous pragmas in `src/IISLogParser/Storage/SchemaInitializer.cs`
-- [ ] T017 Write failing integration tests for batch atomicity, `INSERT OR IGNORE` deduplication and progress upsert in `tests/IISLogParser.Tests/Integration/LogStoreTests.cs`
-- [ ] T018 [P] Define `ILogStore` and `FileProgress` in `src/IISLogParser/Storage/`
-- [ ] T019 Implement `SqliteLogStore` writing rows and the progress mark in a single transaction, with prepared commands reused per batch, in `src/IISLogParser/Storage/SqliteLogStore.cs`
+- [X] T015 Write failing contract tests asserting the DDL, the unique index and invariants I-01 through I-05 in `tests/IISLogParser.Tests/Contract/DatabaseSchemaContractTests.cs` per [contracts/database-schema.md](./contracts/database-schema.md)
+- [X] T016 Implement `SchemaInitializer` with idempotent `IF NOT EXISTS` DDL and the WAL/synchronous pragmas in `src/IISLogParser/Storage/SchemaInitializer.cs`
+- [X] T017 Write failing integration tests for batch atomicity, `INSERT OR IGNORE` deduplication and progress upsert in `tests/IISLogParser.Tests/Integration/LogStoreTests.cs`
+- [X] T018 [P] Define `ILogStore` and `FileProgress` in `src/IISLogParser/Storage/`
+- [X] T019 Implement `SqliteLogStore` writing rows and the progress mark in a single transaction, with prepared commands reused per batch, in `src/IISLogParser/Storage/SqliteLogStore.cs`
 
 ### Shared plumbing
 
-- [ ] T020 [P] Implement `IFileSystem` and `FileSystem` opening files with `FileShare.ReadWrite | FileShare.Delete` in `src/IISLogParser/Ingestion/`
-- [ ] T021 [P] Build the `TempLogTree` fixture and reference log files under `tests/IISLogParser.Tests/Fixtures/`, creating a disposable synthetic log tree per test
-- [ ] T022 [P] Implement `LoggingSetup` emitting one JSON object per line to stderr, and the `OperatorReport` skeleton writing to stdout, in `src/IISLogParser/Diagnostics/`
+- [X] T020 [P] Implement `IFileSystem` and `FileSystem` opening files with `FileShare.ReadWrite | FileShare.Delete` in `src/IISLogParser/Ingestion/`
+- [X] T021 [P] Build the `TempLogTree` fixture and reference log files under `tests/IISLogParser.Tests/Fixtures/`, creating a disposable synthetic log tree per test
+- [X] T022 [P] Implement `LoggingSetup` emitting one JSON object per line to stderr, and the `OperatorReport` skeleton writing to stdout, in `src/IISLogParser/Diagnostics/`
 
 **Checkpoint**: Foundation ready — user story implementation can now begin
 
