@@ -195,11 +195,11 @@ effective-configuration report and the guarantee that a rejected invocation touc
 
 **Purpose**: Cross-story verification and release readiness
 
-- [ ] T066 [P] Add a performance check ingesting a generated 500.000-line reference file and asserting the SC-002 floor in `tests/IISLogParser.Tests/Integration/ThroughputTests.cs`
-- [ ] T067 [P] Add a test asserting the stderr stream contains no per-line event and that every line is valid JSON carrying `ts`, `level` and `event`, in `tests/IISLogParser.Tests/Contract/StructuredLogContractTests.cs` (Principle IV)
-- [ ] T068 [P] Walk every scenario in [quickstart.md](./quickstart.md) manually against a real IIS log folder and record any divergence
-- [ ] T069 Publish with `dotnet publish src/IISLogParser -c Release -r win-x64 --self-contained -p:PublishSingleFile=true` and smoke-test the produced `IISLogParser.exe`
-- [ ] T070 [P] Update [AGENTS.md](../../AGENTS.md) if any build, test or run command changed during implementation
+- [X] T066 [P] Add a performance check ingesting a generated 500.000-line reference file and asserting the SC-002 floor in `tests/IISLogParser.Tests/Integration/ThroughputTests.cs`
+- [X] T067 [P] Add a test asserting the stderr stream contains no per-line event and that every line is valid JSON carrying `ts`, `level` and `event`, in `tests/IISLogParser.Tests/Contract/StructuredLogContractTests.cs` (Principle IV)
+- [X] T068 [P] Walk every scenario in [quickstart.md](./quickstart.md) manually against a real IIS log folder and record any divergence
+- [X] T069 Publish with `dotnet publish src/IISLogParser -c Release -r win-x64 --self-contained -p:PublishSingleFile=true` and smoke-test the produced `IISLogParser.exe`
+- [X] T070 [P] Update [AGENTS.md](../../AGENTS.md) if any build, test or run command changed during implementation
 - [ ] T071 Run `/speckit-converge` and confirm no drift between spec, plan, tasks and code before merging to `main` (Principle V)
 
 ---

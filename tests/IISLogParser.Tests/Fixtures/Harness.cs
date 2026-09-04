@@ -24,13 +24,20 @@ public static class Harness
     public static IngestReport RunSnapshot(
         TempWorkspace workspace,
         TextWriter stdout,
+        IFileSystem? fileSystem = null) =>
+        RunSnapshotWithDiagnostics(workspace, stdout, new DiagnosticLog(NullLogger.Instance), fileSystem);
+
+    /// <summary>Igual, pero con el log de diagnóstico bajo control del test.</summary>
+    public static IngestReport RunSnapshotWithDiagnostics(
+        TempWorkspace workspace,
+        TextWriter stdout,
+        DiagnosticLog diagnostics,
         IFileSystem? fileSystem = null)
     {
         var fs = fileSystem ?? new FileSystem();
         using var store = new SqliteLogStore(workspace.DatabasePath);
         store.Initialize();
 
-        var diagnostics = new DiagnosticLog(NullLogger.Instance);
         var operatorReport = new OperatorReport(stdout);
         var ingestor = new FileIngestor(fs, store, diagnostics, operatorReport);
         var runner = new SnapshotRunner(new SiteDiscovery(fs), ingestor, fs, diagnostics, operatorReport);
