@@ -200,7 +200,7 @@ effective-configuration report and the guarantee that a rejected invocation touc
 - [X] T068 [P] Walk every scenario in [quickstart.md](./quickstart.md) manually against a real IIS log folder and record any divergence
 - [X] T069 Publish with `dotnet publish src/IISLogParser -c Release -r win-x64 --self-contained -p:PublishSingleFile=true` and smoke-test the produced `IISLogParser.exe`
 - [X] T070 [P] Update [AGENTS.md](../../AGENTS.md) if any build, test or run command changed during implementation
-- [ ] T071 Run `/speckit-converge` and confirm no drift between spec, plan, tasks and code before merging to `main` (Principle V)
+- [X] T071 Run `/speckit-converge` and confirm no drift between spec, plan, tasks and code before merging to `main` (Principle V)
 
 ---
 
