@@ -1,0 +1,5 @@
+#Software: Microsoft Internet Information Services 10.0
+#Fields: date time cs-method cs-uri-stem sc-status
+2026-09-03 02:00:00 GET /ok.html 200
+2026-09-03 02:00:01 incompleta
+2026-09-03 02:00:02 GET /igual-sigue.html 200
