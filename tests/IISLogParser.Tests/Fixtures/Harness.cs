@@ -78,3 +78,44 @@ public sealed class FailingFileSystem(IFileSystem inner, string failingPathFragm
     private bool Matches(string path) =>
         path.Contains(failingPathFragment, StringComparison.OrdinalIgnoreCase);
 }
+
+/// <summary>
+/// Composicion del modo continuo para los tests: el ciclo se dispara a mano, sin
+/// esperas reales.
+/// </summary>
+public sealed class ContinuousHarness : IDisposable
+{
+    private readonly SqliteLogStore _store;
+
+    public ContinuousHarness(TempWorkspace workspace, FakeClock clock, IFileSystem? fileSystem = null)
+    {
+        var fs = fileSystem ?? new FileSystem();
+        Output = new StringWriter();
+        _store = new SqliteLogStore(workspace.DatabasePath);
+        _store.Initialize();
+
+        var diagnostics = new DiagnosticLog(NullLogger.Instance);
+        var report = new OperatorReport(Output);
+
+        Runner = new ContinuousRunner(
+            new SiteDiscovery(fs),
+            new FileIngestor(fs, _store, diagnostics, report),
+            fs,
+            _store,
+            diagnostics,
+            report,
+            clock);
+
+        LogsPath = workspace.LogsPath;
+    }
+
+    public ContinuousRunner Runner { get; }
+
+    public StringWriter Output { get; }
+
+    public string LogsPath { get; }
+
+    public IngestReport Cycle() => Runner.RunCycle(LogsPath, CancellationToken.None);
+
+    public void Dispose() => _store.Dispose();
+}

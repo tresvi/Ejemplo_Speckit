@@ -46,7 +46,10 @@ public sealed class Application(
             return (int)ExitCode.InvalidConfiguration;
         }
 
+        // FR-020: la validacion completa ocurre antes de tocar el almacen, de modo que
+        // una invocacion rechazada no deja ningun archivo de base creado.
         var databasePath = Path.GetFullPath(options.DatabasePath);
+        report.WriteStartup(options, databasePath);
         diagnostics.Startup(
             options.Mode.ToString().ToLowerInvariant(),
             options.LogsPath,
@@ -97,19 +100,24 @@ public sealed class Application(
         return (int)result.ToExitCode();
     }
 
-    private static int RunContinuous(
+    private int RunContinuous(
         CliOptions options,
         ILogStore store,
         OperatorReport report,
         CancellationToken cancellationToken)
     {
-        // Pendiente: el modo continuo se construye en la fase 4 de tasks.md (T051 a
-        // T059), con sus tests primero. Hasta entonces la herramienta solo entrega el
-        // MVP de la historia P1.
-        _ = options;
-        _ = store;
-        _ = cancellationToken;
-        report.WriteError("El modo continuous todavia no esta implementado. Use --mode snapshot.");
-        return (int)ExitCode.InvalidConfiguration;
+        var runner = new ContinuousRunner(
+            new SiteDiscovery(fileSystem),
+            new FileIngestor(fileSystem, store, diagnostics, report),
+            fileSystem,
+            store,
+            diagnostics,
+            report,
+            SystemClock.Instance);
+
+        runner.Run(options.LogsPath, TimeSpan.FromSeconds(options.PollIntervalSeconds), cancellationToken);
+
+        // FR-017: el cierre ordenado es exito, no error.
+        return (int)ExitCode.Success;
     }
 }

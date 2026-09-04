@@ -134,28 +134,28 @@ quickstart escenario 7.
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T041 [P] [US2] Unit tests for `u_exYYMMDD.log` and `exYYMMDD.log` date extraction, and for unrecognised names, in `tests/IISLogParser.Tests/Unit/LogFileNameTests.cs`
-- [ ] T042 [P] [US2] Unit tests for the watched set — today's file per site united with any file holding pending bytes — in `tests/IISLogParser.Tests/Unit/WatchSetResolverTests.cs`
-- [ ] T043 [P] [US2] Integration test asserting an existing today file is backfilled from the start before the first poll, and previous days are left alone, in `tests/IISLogParser.Tests/Integration/ContinuousBackfillTests.cs` (FR-014a, escenario 7)
-- [ ] T044 [P] [US2] Integration test asserting three appended lines appear as exactly three new rows on the next cycle in `tests/IISLogParser.Tests/Integration/ContinuousModeTests.cs`
-- [ ] T045 [P] [US2] Integration test asserting a cycle with no file changes writes nothing in `tests/IISLogParser.Tests/Integration/ContinuousModeTests.cs`
-- [ ] T046 [P] [US2] Integration test asserting a today file created after startup is picked up without restart in `tests/IISLogParser.Tests/Integration/ContinuousDiscoveryTests.cs` (FR-016)
-- [ ] T047 [P] [US2] Integration test asserting day rollover switches files without losing the tail of the previous day in `tests/IISLogParser.Tests/Integration/DayRolloverTests.cs` (FR-016, escenario 4 of US2)
-- [ ] T048 [P] [US2] Integration test asserting cancellation commits the in-flight batch and a later run duplicates nothing in `tests/IISLogParser.Tests/Integration/GracefulShutdownTests.cs` (FR-017)
-- [ ] T049 [P] [US2] Integration test asserting a skipped path is retried on the following cycle without stopping the process in `tests/IISLogParser.Tests/Integration/PartialFailureTests.cs` (FR-026)
-- [ ] T050 [P] [US2] Integration test asserting cycles never overlap when a cycle outlasts the poll interval in `tests/IISLogParser.Tests/Integration/CycleOverlapTests.cs`
+- [X] T041 [P] [US2] Unit tests for `u_exYYMMDD.log` and `exYYMMDD.log` date extraction, and for unrecognised names, in `tests/IISLogParser.Tests/Unit/LogFileNameTests.cs`
+- [X] T042 [P] [US2] Unit tests for the watched set — today's file per site united with any file holding pending bytes — in `tests/IISLogParser.Tests/Unit/WatchSetResolverTests.cs`
+- [X] T043 [P] [US2] Integration test asserting an existing today file is backfilled from the start before the first poll, and previous days are left alone, in `tests/IISLogParser.Tests/Integration/ContinuousBackfillTests.cs` (FR-014a, escenario 7)
+- [X] T044 [P] [US2] Integration test asserting three appended lines appear as exactly three new rows on the next cycle in `tests/IISLogParser.Tests/Integration/ContinuousModeTests.cs`
+- [X] T045 [P] [US2] Integration test asserting a cycle with no file changes writes nothing in `tests/IISLogParser.Tests/Integration/ContinuousModeTests.cs`
+- [X] T046 [P] [US2] Integration test asserting a today file created after startup is picked up without restart in `tests/IISLogParser.Tests/Integration/ContinuousDiscoveryTests.cs` (FR-016)
+- [X] T047 [P] [US2] Integration test asserting day rollover switches files without losing the tail of the previous day in `tests/IISLogParser.Tests/Integration/DayRolloverTests.cs` (FR-016, escenario 4 of US2)
+- [X] T048 [P] [US2] Integration test asserting cancellation commits the in-flight batch and a later run duplicates nothing in `tests/IISLogParser.Tests/Integration/GracefulShutdownTests.cs` (FR-017)
+- [X] T049 [P] [US2] Integration test asserting a skipped path is retried on the following cycle without stopping the process in `tests/IISLogParser.Tests/Integration/PartialFailureTests.cs` (FR-026)
+- [X] T050 [P] [US2] Integration test asserting cycles never overlap when a cycle outlasts the poll interval in `tests/IISLogParser.Tests/Integration/CycleOverlapTests.cs`
 
 ### Implementation for User Story 2
 
-- [ ] T051 [P] [US2] Implement `LogFileName` date parsing for both daily patterns in `src/IISLogParser/Discovery/LogFileName.cs`
-- [ ] T052 [US2] Implement `WatchSetResolver` in `src/IISLogParser/Discovery/WatchSetResolver.cs` — today's file per site ∪ files with pending bytes
-- [ ] T053 [P] [US2] Introduce injectable `IClock` and cycle trigger abstractions in `src/IISLogParser/Ingestion/` so tests drive N cycles deterministically without real waits (D-013)
-- [ ] T054 [US2] Implement `ContinuousRunner` in `src/IISLogParser/Ingestion/ContinuousRunner.cs` — run the cycle, then wait the interval, never overlapping
-- [ ] T055 [US2] Add the startup backfill path to `ContinuousRunner` — ingest today's file from its progress mark, or from zero when absent, before the first poll (FR-014a)
-- [ ] T056 [US2] Add graceful shutdown to `ContinuousRunner` — `CancellationToken` honoured at batch boundaries only, wired to `Console.CancelKeyPress` (FR-017, D-010)
-- [ ] T057 [US2] Add per-cycle retry of previously skipped paths to `ContinuousRunner` (FR-026)
-- [ ] T058 [US2] Wire the continuous path in `src/IISLogParser/Program.cs` and emit the per-cycle report line, including cycles with all-zero counters
-- [ ] T059 [US2] Emit the `cycle_completed` and `shutdown` structured events at their boundaries in `src/IISLogParser/Diagnostics/`
+- [X] T051 [P] [US2] Implement `LogFileName` date parsing for both daily patterns in `src/IISLogParser/Discovery/LogFileName.cs`
+- [X] T052 [US2] Implement `WatchSetResolver` in `src/IISLogParser/Discovery/WatchSetResolver.cs` — today's file per site ∪ files with pending bytes
+- [X] T053 [P] [US2] Introduce injectable `IClock` and cycle trigger abstractions in `src/IISLogParser/Ingestion/` so tests drive N cycles deterministically without real waits (D-013)
+- [X] T054 [US2] Implement `ContinuousRunner` in `src/IISLogParser/Ingestion/ContinuousRunner.cs` — run the cycle, then wait the interval, never overlapping
+- [X] T055 [US2] Add the startup backfill path to `ContinuousRunner` — ingest today's file from its progress mark, or from zero when absent, before the first poll (FR-014a)
+- [X] T056 [US2] Add graceful shutdown to `ContinuousRunner` — `CancellationToken` honoured at batch boundaries only, wired to `Console.CancelKeyPress` (FR-017, D-010)
+- [X] T057 [US2] Add per-cycle retry of previously skipped paths to `ContinuousRunner` (FR-026)
+- [X] T058 [US2] Wire the continuous path in `src/IISLogParser/Program.cs` and emit the per-cycle report line, including cycles with all-zero counters
+- [X] T059 [US2] Emit the `cycle_completed` and `shutdown` structured events at their boundaries in `src/IISLogParser/Diagnostics/`
 
 **Checkpoint**: User Stories 1 and 2 both work independently
 
@@ -177,15 +177,15 @@ effective-configuration report and the guarantee that a rejected invocation touc
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T060 [P] [US3] Contract test asserting a no-argument invocation reports continuous mode and a 10-second interval in `tests/IISLogParser.Tests/Contract/CliDefaultsTests.cs` (FR-018)
-- [ ] T061 [P] [US3] Contract test asserting `--poll-interval 30` overrides the default in `tests/IISLogParser.Tests/Contract/CliDefaultsTests.cs` (FR-019)
-- [ ] T062 [P] [US3] Contract test asserting an invalid mode or interval exits with code 1 and creates no database file in `tests/IISLogParser.Tests/Contract/CliContractTests.cs` (FR-020)
-- [ ] T063 [P] [US3] Contract test asserting the startup block prints all four effective values, and the snapshot-mode variant of the interval line, in `tests/IISLogParser.Tests/Contract/StartupReportTests.cs` (FR-021)
+- [X] T060 [P] [US3] Contract test asserting a no-argument invocation reports continuous mode and a 10-second interval in `tests/IISLogParser.Tests/Contract/CliDefaultsTests.cs` (FR-018)
+- [X] T061 [P] [US3] Contract test asserting `--poll-interval 30` overrides the default in `tests/IISLogParser.Tests/Contract/CliDefaultsTests.cs` (FR-019)
+- [X] T062 [P] [US3] Contract test asserting an invalid mode or interval exits with code 1 and creates no database file in `tests/IISLogParser.Tests/Contract/CliContractTests.cs` (FR-020)
+- [X] T063 [P] [US3] Contract test asserting the startup block prints all four effective values, and the snapshot-mode variant of the interval line, in `tests/IISLogParser.Tests/Contract/StartupReportTests.cs` (FR-021)
 
 ### Implementation for User Story 3
 
-- [ ] T064 [US3] Implement the effective-configuration startup block in `src/IISLogParser/Diagnostics/OperatorReport.cs`, including the `10 s (ignorado en modo snapshot)` variant
-- [ ] T065 [US3] Ensure `src/IISLogParser/Program.cs` validates arguments and resolves the logs path **before** opening or creating the store, so a rejected invocation leaves no database behind (FR-020)
+- [X] T064 [US3] Implement the effective-configuration startup block in `src/IISLogParser/Diagnostics/OperatorReport.cs`, including the `10 s (ignorado en modo snapshot)` variant
+- [X] T065 [US3] Ensure `src/IISLogParser/Program.cs` validates arguments and resolves the logs path **before** opening or creating the store, so a rejected invocation leaves no database behind (FR-020)
 
 **Checkpoint**: All user stories independently functional
 

@@ -1,4 +1,5 @@
 using System.Globalization;
+using IISLogParser.Cli;
 
 namespace IISLogParser.Diagnostics;
 
@@ -9,6 +10,32 @@ namespace IISLogParser.Diagnostics;
 public sealed class OperatorReport(TextWriter output)
 {
     private readonly TextWriter _output = output;
+
+    /// <summary>
+    /// Configuración efectiva con la que quedó corriendo la herramienta (FR-021).
+    /// En modo snapshot la línea del intervalo se omite, salvo que el operador lo haya
+    /// pasado explícitamente: ahí se muestra el valor que dio, marcado como ignorado,
+    /// porque callarlo dejaría al operador creyendo que tuvo efecto.
+    /// </summary>
+    public void WriteStartup(CliOptions options, string resolvedDatabasePath)
+    {
+        ArgumentNullException.ThrowIfNull(options);
+
+        _output.WriteLine("IISLogParser");
+        _output.WriteLine($"  Modo             : {options.Mode.ToString().ToLowerInvariant()}");
+        _output.WriteLine($"  Carpeta de logs  : {options.LogsPath}");
+        _output.WriteLine($"  Base de datos    : {resolvedDatabasePath}");
+
+        if (options.Mode == RunMode.Continuous)
+        {
+            _output.WriteLine($"  Poll interval    : {options.PollIntervalSeconds} s");
+        }
+        else if (options.PollIntervalExplicit)
+        {
+            _output.WriteLine(
+                $"  Poll interval    : {options.PollIntervalSeconds} s (ignorado en modo snapshot)");
+        }
+    }
 
     /// <summary>
     /// Resumen de un ciclo o de una ejecución (FR-022). Un ciclo sin novedades emite
