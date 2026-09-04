@@ -196,6 +196,27 @@ Generar un archivo de referencia de 500.000 líneas válidas y correr un snapsho
 diseño de lotes transaccionales debería quedar holgadamente por debajo; si no lo hace, el problema
 está en el tamaño de lote o en los pragmas de SQLite (D-008), no en el parseo.
 
+## Comprobación de ejecución sostenida (SC-006)
+
+Las 24 horas de ejecución no pueden vivir en la suite por defecto: romperían el Principio III,
+que exige una suite determinista y ejecutable en cualquier momento. La verificación se parte en
+dos, y ambas mitades existen en `tests/IISLogParser.Tests/Integration/SoakTests.cs`.
+
+**Proxy determinista** — corre siempre, en segundos. Ejecuta 2.000 ciclos con el reloj inyectado
+y verifica que la memoria retenida no crece; 1.000 ciclos sin cambios verificando que no se
+reingesta nada; y diez días de rotación comprimidos verificando que no se pierde ni se duplica
+un solo registro. Eso es exactamente lo que un soak buscaría detectar, sin esperar un día.
+
+**Soak real** — opt-in, para correr antes de un despliegue:
+
+```bash
+IISLOGPARSER_SOAK_MINUTES=1440 dotnet test --filter SoakReal
+```
+
+**Esperado**: al terminar, el conteo de filas coincide con las líneas escritas, el proceso cierra
+con código 0, y el uso de memoria del proceso al final está en el mismo orden que a los cinco
+minutos de arrancar. Sin la variable de entorno, ese test no consume tiempo.
+
 ## Comprobación del log estructurado (Principio IV)
 
 Redirigir stderr a un archivo durante cualquier escenario:

@@ -50,6 +50,13 @@ public sealed class OperatorReport(TextWriter output)
             $"Rechazadas: {rejectedLines} | Omitidos: {skippedPaths}");
     }
 
+    /// <summary>
+    /// El recorrido no encontró nada que procesar (US1/AC2). La línea de resumen con
+    /// ceros lo dice de forma implícita; el escenario pide decirlo.
+    /// </summary>
+    public void WriteNoFilesFound() =>
+        _output.WriteLine("No se encontro ningun archivo de log para procesar.");
+
     /// <summary>Detalle de una omisión, antes de la línea de resumen.</summary>
     public void WriteSkipped(string path, string reason) =>
         _output.WriteLine($"  OMITIDO  {path} — {reason}");

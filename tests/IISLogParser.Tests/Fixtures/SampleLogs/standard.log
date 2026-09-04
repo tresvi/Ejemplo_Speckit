@@ -1,0 +1,7 @@
+#Software: Microsoft Internet Information Services 10.0
+#Version: 1.0
+#Date: 2026-09-03 00:00:02
+#Fields: date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Referer) sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
+2026-09-03 00:00:02 10.0.0.4 GET /index.html - 80 - 10.0.0.99 Mozilla/5.0+(Windows+NT+10.0) - 200 0 0 1284 412 15
+2026-09-03 00:00:03 10.0.0.4 POST /api/items id=42 80 jdoe 10.0.0.99 Mozilla/5.0+(Windows+NT+10.0) https://ejemplo/alta 201 0 0 96 733 87
+2026-09-03 00:00:04 10.0.0.4 GET /faltante.html - 80 - 10.0.0.99 curl/8.4.0 - 404 0 2 209 88 3

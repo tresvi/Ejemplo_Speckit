@@ -24,6 +24,11 @@ public sealed class SqliteLogStore : ILogStore
         {
             DataSource = databasePath,
             Mode = SqliteOpenMode.ReadWriteCreate,
+
+            // El almacen mantiene una sola conexion durante toda la vida del proceso:
+            // el pool no aporta nada, y su alcance global vuelve no determinista a
+            // cualquier suite que abra varias bases en paralelo.
+            Pooling = false,
         }.ToString());
 
         _connection.Open();

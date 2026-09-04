@@ -22,4 +22,9 @@
     <ProjectReference Include="..\..\src\IISLogParser\IISLogParser.csproj" />
   </ItemGroup>
 
+  <!-- Logs de referencia: son datos de test versionados, no salida de build. -->
+  <ItemGroup>
+    <Content Include="Fixtures\SampleLogs\**\*.log" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

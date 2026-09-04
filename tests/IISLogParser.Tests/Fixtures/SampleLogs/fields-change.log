@@ -1,0 +1,7 @@
+#Software: Microsoft Internet Information Services 10.0
+#Version: 1.0
+#Date: 2026-09-03 00:00:02
+#Fields: date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Referer) sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
+2026-09-03 01:00:00 10.0.0.5 GET /antes.html - 80 - 10.0.0.77 curl/8.4.0 - 200 0 0 512 90 4
+#Fields: date time cs-method cs-uri-stem sc-status X-Forwarded-For
+2026-09-03 01:05:00 GET /despues.html 200 203.0.113.9

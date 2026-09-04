@@ -67,6 +67,15 @@ public sealed class Application(
                 _ => RunContinuous(options, store, report, cancellationToken),
             };
         }
+        catch (LogsRootUnavailableException ex)
+        {
+            // No es un fallo del almacen: es una configuracion inviable, y el operador
+            // necesita ver la causa real y el codigo 1, no un 3 que lo mande a mirar la
+            // base de datos (FR-020).
+            report.WriteError(ex.Message);
+            diagnostics.FatalError("logs_root_unavailable", ex);
+            return (int)ExitCode.InvalidConfiguration;
+        }
         catch (SqliteException ex)
         {
             report.WriteError($"Fallo del almacen de datos: {ex.Message}");

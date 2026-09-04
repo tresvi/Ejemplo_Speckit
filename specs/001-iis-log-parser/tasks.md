@@ -297,3 +297,21 @@ it.
 - The single-transaction invariant (I-01) is the one thing that cannot be relaxed for convenience:
   if rows and the progress mark ever commit separately, the tool silently loses or duplicates
   records under crash, and no test above will catch it after the fact
+
+---
+
+## Phase 7: Convergence
+
+**Purpose**: Cerrar la brecha detectada por `/speckit-converge` entre lo que piden spec, plan
+y tasks, y lo que el codigo hace hoy. Sin violaciones de constitucion: ningun hallazgo es
+CRITICAL.
+
+- [X] T072 Manejar el fallo al enumerar la carpeta raiz de logs en `src/IISLogParser/Ingestion/SnapshotRunner.cs` y `src/IISLogParser/Cli/Application.cs`: hoy un `UnauthorizedAccessException` escapa de todos los `catch` y termina en un stack trace, en vez de informar la causa y salir con codigo 1, per FR-020 (contradicts)
+- [X] T073 Evitar que un fallo de la carpeta raiz mate el bucle continuo en `src/IISLogParser/Ingestion/ContinuousRunner.cs`: el ciclo debe reportar la omision y reintentar en el ciclo siguiente en vez de propagar la excepcion, per FR-026 (contradicts)
+- [X] T074 Distinguir en `src/IISLogParser/Cli/Application.cs` un fallo de lectura de logs de un fallo del almacen: hoy una `IOException` sobre la carpeta de logs se reporta como "Fallo del almacen de datos" con codigo 3, per FR-020 y FR-023 (contradicts)
+- [X] T075 Definir y testear el comportamiento de dos instancias sobre el mismo archivo de base en `tests/IISLogParser.Tests/Integration/SecondInstanceTests.cs`, per edge case "Segunda instancia" (partial)
+- [X] T076 Agregar un test del camino de fallo de almacen (codigo de salida 3 y mensaje claro) en `tests/IISLogParser.Tests/Contract/StoreFailureTests.cs`, per FR-023 (partial)
+- [X] T077 Emitir un mensaje explicito cuando el recorrido no encuentra ningun archivo que procesar en `src/IISLogParser/Diagnostics/OperatorReport.cs`, per US1/AC2 (partial)
+- [X] T078 Crear los logs de referencia en `tests/IISLogParser.Tests/Fixtures/SampleLogs/` o ajustar la referencia del plan, que hoy nombra una carpeta que no existe porque `TempWorkspace` genera los logs en codigo, per plan: arbol de tests (partial)
+- [X] T079 Revisar y justificar la divergencia con el arbol de codigo del plan: `Cli/Application.cs`, `Diagnostics/DiagnosticLog.cs`, `Diagnostics/JsonEventFormatter.cs` e `Ingestion/IClock.cs` no estan en el plan, y `ISiteDiscovery`, `FileProgress` y `FileSystem` viven dentro de otros archivos, per plan: Source Code tree (unrequested)
+- [X] T080 Definir como se verifica la ejecucion sostenida de 24 horas sin degradacion de memoria ni perdida de registros, per SC-006 (partial)

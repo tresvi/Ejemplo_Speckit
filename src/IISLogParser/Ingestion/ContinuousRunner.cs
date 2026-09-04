@@ -67,7 +67,21 @@ public sealed class ContinuousRunner(
 
         var result = new IngestReport();
         var today = DateOnly.FromDateTime(clock.UtcNow.UtcDateTime);
-        var watched = _watchSet.Resolve(logsRoot, today);
+
+        WatchSet watched;
+
+        try
+        {
+            watched = _watchSet.Resolve(logsRoot, today);
+        }
+        catch (LogsRootUnavailableException ex)
+        {
+            // Un recurso de red que parpadea no puede matar un proceso pensado para
+            // correr 24 horas: se reporta la omision y el ciclo siguiente reintenta
+            // (FR-026, SC-006).
+            Skip(result, logsRoot, ex.InnerException?.Message ?? ex.Message);
+            watched = new WatchSet([], []);
+        }
 
         foreach (var skipped in watched.Skipped)
         {

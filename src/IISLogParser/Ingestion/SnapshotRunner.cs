@@ -33,6 +33,13 @@ public sealed class SnapshotRunner(
             IngestSite(logsRoot, site, result, cancellationToken);
         }
 
+        if (result.FilesProcessed == 0 && result.SkippedPaths.Count == 0)
+        {
+            // Decirlo solo cuando de verdad no habia nada: con omisiones, el silencio
+            // sobre los archivos procesados no significa que la carpeta estuviera vacia.
+            report.WriteNoFilesFound();
+        }
+
         report.WriteSummary(
             result.FilesProcessed,
             result.RecordsIngested,

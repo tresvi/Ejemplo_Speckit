@@ -28,7 +28,9 @@ public sealed class TempWorkspace : IDisposable
 
     public string DatabasePath { get; }
 
-    public string ConnectionString => $"Data Source={DatabasePath}";
+    // Sin pool: su alcance es global al proceso, y con los tests corriendo en paralelo
+    // eso hace que un workspace que se libera le cierre conexiones a otro test.
+    public string ConnectionString => $"Data Source={DatabasePath};Pooling=False";
 
     /// <summary>Cabecera W3C completa, tal como la escribe IIS al abrir un archivo.</summary>
     public static IReadOnlyList<string> StandardHeader =>
@@ -78,6 +80,23 @@ public sealed class TempWorkspace : IDisposable
 
         File.WriteAllText(path, content.ToString(), new UTF8Encoding(false));
         return path;
+    }
+
+    /// <summary>
+    /// Copia uno de los logs de referencia de <c>Fixtures/SampleLogs/</c> dentro del
+    /// árbol. Son archivos reales versionados en el repositorio: cubren formas que el
+    /// generador programático no produce (agentes de usuario con '+', cambio de
+    /// cabecera a mitad de archivo, campos fuera del esquema fijo).
+    /// </summary>
+    public string CopySampleLog(string siteId, string sampleFileName, string targetFileName)
+    {
+        CreateSite(siteId);
+
+        var source = Path.Combine(AppContext.BaseDirectory, "Fixtures", "SampleLogs", sampleFileName);
+        var target = FilePath(siteId, targetFileName);
+        File.Copy(source, target, overwrite: true);
+
+        return target;
     }
 
     /// <summary>Agrega líneas completas al final de un archivo existente.</summary>
@@ -135,8 +154,8 @@ public sealed class TempWorkspace : IDisposable
 
     public void Dispose()
     {
-        SqliteConnection.ClearAllPools();
-
+        // Nada de ClearAllPools() aca: es process-wide y le arrebataria conexiones a los
+        // tests que corren en paralelo. Sin pool no hace falta (Principio III).
         try
         {
             if (Directory.Exists(Root))

@@ -15,8 +15,22 @@ public sealed record SkippedPath(string Path, string Reason);
 /// </summary>
 public sealed record DiscoveryResult(IReadOnlyList<SiteFolder> Sites, IReadOnlyList<SkippedPath> Ignored);
 
+/// <summary>
+/// La carpeta raíz de logs no pudo recorrerse. Existe como tipo propio porque el
+/// tratamiento correcto depende del modo: en snapshot es una configuración inviable
+/// (código 1), y en modo continuo es una omisión del ciclo que se reintenta. Sin este
+/// tipo, la excepción original se confundía con un fallo del almacén o escapaba sin
+/// manejar.
+/// </summary>
+public sealed class LogsRootUnavailableException(string logsRoot, Exception innerException)
+    : Exception($"No se pudo recorrer la carpeta de logs '{logsRoot}': {innerException.Message}", innerException)
+{
+    public string LogsRoot { get; } = logsRoot;
+}
+
 public interface ISiteDiscovery
 {
+    /// <exception cref="LogsRootUnavailableException">La raíz no pudo enumerarse.</exception>
     DiscoveryResult DiscoverSites(string logsRoot);
 }
 
@@ -31,7 +45,21 @@ public sealed partial class SiteDiscovery(IFileSystem fileSystem) : ISiteDiscove
         var sites = new List<SiteFolder>();
         var ignored = new List<SkippedPath>();
 
-        foreach (var directory in fileSystem.EnumerateDirectories(logsRoot).Order(StringComparer.OrdinalIgnoreCase))
+        List<string> directories;
+
+        try
+        {
+            directories = [.. fileSystem.EnumerateDirectories(logsRoot).Order(StringComparer.OrdinalIgnoreCase)];
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            // La raiz puede volverse ilegible entre el chequeo de existencia y la
+            // enumeracion, o desaparecer a mitad de una corrida larga si es un recurso
+            // de red. Quien llama decide que hacer segun el modo.
+            throw new LogsRootUnavailableException(logsRoot, ex);
+        }
+
+        foreach (var directory in directories)
         {
             var name = System.IO.Path.GetFileName(directory);
 

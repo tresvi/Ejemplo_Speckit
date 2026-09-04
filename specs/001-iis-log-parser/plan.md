@@ -178,6 +178,19 @@ cada requisito funcional cae en un único lugar. Las dos interfaces del diseño 
 `ILogStore`) existen por testabilidad concreta y demostrable —simular un archivo ilegible y
 verificar el contrato de almacenamiento—, no por abstracción especulativa.
 
+### Desviaciones de estructura, justificadas
+
+Registradas al cerrar el hallazgo F8 de `/speckit-converge`. Ninguna cambia el diseño; todas son
+decisiones de ubicación que aparecieron al implementar.
+
+| Desviación | Por qué |
+|---|---|
+| `Cli/Application.cs` no estaba previsto | La composición vivía implícita en `Program.cs`. Separarla permite que los tests de contrato ejerciten la superficie completa —incluida la garantía de que una invocación rechazada no crea la base— sin lanzar un proceso. |
+| `Diagnostics/DiagnosticLog.cs` y `Diagnostics/JsonEventFormatter.cs` no estaban previstos | El contrato de CLI fija los nombres de campo `ts`/`level`/`event`, y el formateador JSON que trae la consola emite los suyos. `JsonEventFormatter` los traduce; `DiagnosticLog` concentra los nueve eventos del contrato para que ningún llamador invente uno nuevo. |
+| `Ingestion/IClock.cs` no estaba previsto | El plan pedía inyectar reloj y disparador de ciclo (D-013) sin nombrar dónde. Viven juntos porque ambos existen por la misma razón: que la suite no espere tiempo real. |
+| `ISiteDiscovery`, `FileProgress` y `FileSystem` viven dentro de otros archivos | Cada uno tiene menos de treinta líneas y no se entiende separado de su implementación o de su interfaz. Un archivo por tipo habría sido ceremonia sin lector. |
+| `Discovery/LogsRootUnavailableException` no estaba previsto | Surgió del hallazgo F1: el tratamiento correcto de una raíz ilegible depende del modo —configuración inviable en snapshot, omisión reintentable en continuo—, y sin un tipo propio la excepción se confundía con un fallo del almacén. |
+
 ## Orden de construcción (Test-First, Principio III)
 
 Cada paso empieza por su test, se verifica en rojo, y recién entonces se implementa. El orden
