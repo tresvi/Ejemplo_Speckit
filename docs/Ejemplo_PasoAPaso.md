@@ -52,7 +52,7 @@ Ejecutar en el directorio vacío:
 specify init . --integration claude
 ```
 
-### Paso 4 — Ejecutar `/speckit.constitution`
+### Paso 4 — Ejecutar `/speckit.constitution`  (-> Esta constitution se podria reutilizar en cualquier proyecto de cualquier tecnología asi como esta)
 
 ```text
 /speckit.constitution Este proyecto sigue estos principios no negociables:
@@ -77,7 +77,7 @@ FLUJO. Cada fase de Spec Kit cierra en su propio commit sobre la rama de la
 feature. El merge a main exige tests en verde y /speckit.converge sin deriva.
 ```
 
-### Paso 5 — Ejecutar `/speckit-specify`
+### Paso 5 — Ejecutar `/speckit-specify`   
 
 Puede ejecutarse sobre un prompt, un PRD existente, un ticket de Jira o una tarjeta de GitHub Projects.
 
@@ -114,7 +114,7 @@ Pero no solo eso, también debe:
   Poll Interval por default de 10 segundos.
 ```
 
-### Paso 6 — Ejecutar `/speckit-clarify`
+### Paso 6 — Ejecutar `/speckit-clarify`   (obligatorio si aparecen [NEED CLARIFICATION], si no, es opcional pero recomendado)
 
 ```text
 /speckit-clarify
@@ -134,7 +134,7 @@ Pero no solo eso, también debe:
 /speckit-tasks
 ```
 
-### Paso 9 — Ejecutar `/speckit-analyze`
+### Paso 9 — Ejecutar `/speckit-analyze`	(opcional, pero recomendado)
 
 ```text
 /speckit-analyze
@@ -146,7 +146,15 @@ Pero no solo eso, también debe:
 /speckit-implement
 ```
 
-### Paso 11 — Proponer una nueva feature reiniciando el ciclo desde Specify.
+### Paso 11 — Ejecutar `/speckit-converge`	(opcional en general, pero **super recomendado en este proyecto** antes de mergear a `main`)  
+Compara lo que piden `spec.md`, `plan.md` y `tasks.md` contra lo que el código realmente hace hoy.
+
+```text
+/speckit-converge
+```
+
+
+### Paso 12 — Proponer una nueva feature reiniciando el ciclo desde Specify hasta implement.
 /speckit-specify Quiero que corra sobre una carpeta con la estructura de los logs de IIS, y no necesariamente con el IISLocal. Esto se podria hacer pasandole un paramtero especial. 
 
 ---
