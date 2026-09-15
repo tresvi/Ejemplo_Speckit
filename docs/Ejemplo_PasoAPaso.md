@@ -54,10 +54,10 @@ specify init . --force --ignore-agent-tools
 
 El comando consultara el harness a usar (Claude, Copilot, etc)
 
-### Paso 4 — Ejecutar `/speckit.constitution`  (-> Esta constitution se podria reutilizar en cualquier proyecto de cualquier tecnología asi como esta)
+### Paso 4 — Ejecutar `/speckit-constitution`  (-> Esta constitution se podria reutilizar en cualquier proyecto de cualquier tecnología asi como esta)
 
 ```text
-/speckit.constitution Este proyecto sigue estos principios no negociables:
+/speckit-constitution Este proyecto sigue estos principios no negociables:
 
 CERO ALUCINACIÓN. El sistema nunca emite datos que no estén en su fuente de
 verdad. Toda salida derivada de un modelo cita su registro de origen. Si el
@@ -76,7 +76,7 @@ fuente consultada. Los logs son estructurados y nunca contienen secretos ni
 PII. No se instrumenta el flujo interno, solo límites, decisiones y fallos.
 
 FLUJO. Cada fase de Spec Kit cierra en su propio commit sobre la rama de la
-feature. El merge a main exige tests en verde y /speckit.converge sin deriva.
+feature. El merge a main exige tests en verde y /speckit-converge sin deriva.
 ```
 
 ### Paso 5 — Ejecutar `/speckit-specify`   
