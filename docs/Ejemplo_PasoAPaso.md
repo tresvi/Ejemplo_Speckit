@@ -49,8 +49,10 @@ Pegar las skills `create-prd` y `conventional-commit`.
 Ejecutar en el directorio vacío:
 
 ```powershell
-specify init . --integration claude
+specify init . --force --ignore-agent-tools
 ```
+
+El comando consultara el harness a usar (Claude, Copilot, etc)
 
 ### Paso 4 — Ejecutar `/speckit.constitution`  (-> Esta constitution se podria reutilizar en cualquier proyecto de cualquier tecnología asi como esta)
 
